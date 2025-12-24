@@ -35,31 +35,31 @@ export class UserMiddleware implements IMiddleware<Context, NextFunction> {
 
   resolve() {
     return async (ctx: Context, next: NextFunction) => {
-      let { url } = ctx;
-      url = url.replace(this.prefix, '').split('?')[0];
-      if (_.startsWith(url, '/app/')) {
-        const token = ctx.get('Authorization');
-        try {
-          ctx.user = jwt.verify(token, this.jwtConfig.secret);
-
-          if (ctx.user.isRefresh) {
-            throw new CoolCommException('登录失效~');
-          }
-        } catch (error) {}
-        // 使用matchUrl方法来检查URL是否应该被忽略
-        const isIgnored = this.ignoreUrls.some(pattern =>
-          this.utils.matchUrl(pattern, url)
-        );
-        if (isIgnored) {
-          await next();
-          return;
-        } else {
-          if (!ctx.user) {
-            ctx.status = 401;
-            throw new CoolCommException('登录失效~');
-          }
-        }
-      }
+      // let { url } = ctx;
+      // url = url.replace(this.prefix, '').split('?')[0];
+      // if (_.startsWith(url, '/app/')) {
+      //   const token = ctx.get('Authorization');
+      //   try {
+      //     ctx.user = jwt.verify(token, this.jwtConfig.secret);
+      //     console.log(ctx.user, 'ctx.user');
+      //     if (ctx.user.isRefresh) {
+      //       throw new CoolCommException('登录失效~');
+      //     }
+      //   } catch (error) {}
+      //   // 使用matchUrl方法来检查URL是否应该被忽略
+      //   const isIgnored = this.ignoreUrls.some(pattern =>
+      //     this.utils.matchUrl(pattern, url)
+      //   );
+      //   if (isIgnored) {
+      //     await next();
+      //     return;
+      //   } else {
+      //     if (!ctx.user) {
+      //       ctx.status = 401;
+      //       throw new CoolCommException('登录失效~');
+      //     }
+      //   }
+      // }
       await next();
     };
   }

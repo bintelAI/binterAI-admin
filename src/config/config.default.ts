@@ -10,13 +10,17 @@ import { availablePort } from '../comm/port';
 
 export default {
   // 确保每个项目唯一，项目首次启动会自动生成
-  keys: 'cool-admin-keys-xxxxxx',
+  keys: '82b3a1fb-df1b-4f44-bfb8-98ad660a2532',
   koa: {
     port: availablePort(8001),
   },
   // 开启异步上下文管理
   asyncContextManager: {
     enable: true,
+  },
+  cors: {
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   },
   // 静态文件配置
   staticFile: {
