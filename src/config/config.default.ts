@@ -14,6 +14,19 @@ export default {
   koa: {
     port: availablePort(8001),
   },
+  // bodyParser 配置，增加请求体大小限制以支持富文本编辑器内容
+  // 注意：这是顶级配置项，不是 koa 对象的子项
+  bodyParser: {
+    enable: true,
+    encoding: 'utf-8',
+    formLimit: '10mb',
+    jsonLimit: '10mb',
+    textLimit: '10mb',
+    strict: true,
+    onerror: (err, ctx) => {
+      ctx.throw('body parser error', 422);
+    },
+  },
   // 开启异步上下文管理
   asyncContextManager: {
     enable: true,

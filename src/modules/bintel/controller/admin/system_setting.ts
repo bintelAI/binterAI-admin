@@ -1,4 +1,4 @@
-import { CoolController, BaseController } from '@cool-midway/core';
+import { CoolController, BaseController,CoolTag, TagTypes } from '@cool-midway/core';
 import { Inject, Post, Get, Body, Query } from '@midwayjs/core';
 import { Validate } from '@midwayjs/validate';
 import { BintelSystemSettingService } from '../../service/system_setting';
@@ -78,6 +78,45 @@ export class AdminBintelSystemSettingController extends BaseController {
         '微信支付配置'
       );
     }
+    return this.ok();
+  }
+
+  /**
+   * 获取前端模块显示配置
+   */
+  @CoolTag(TagTypes.IGNORE_TOKEN)
+  @Post('/config', { summary: '获取前端模块配置' })
+  async getConfig() {
+    const forumEnabled = await this.bintelSystemSettingService.getByKey('forum_enabled');
+    const newsEnabled = await this.bintelSystemSettingService.getByKey('news_enabled');
+    
+    return this.ok({
+      forum_enabled: forumEnabled ? JSON.parse(forumEnabled.value) : false,
+      news_enabled: newsEnabled ? JSON.parse(newsEnabled.value) : false,
+    });
+  }
+
+  /**
+   * 保存前端模块显示配置
+   */
+  @Post('/save_config', { summary: '保存前端模块配置' })
+  async saveConfig(@Body() body) {
+    const { forum_enabled, news_enabled } = body;
+    
+    await this.bintelSystemSettingService.saveByKey(
+      'forum_enabled',
+      JSON.stringify(!!forum_enabled),
+      'frontend',
+      '是否显示开发者社区模块'
+    );
+    
+    await this.bintelSystemSettingService.saveByKey(
+      'news_enabled',
+      JSON.stringify(!!news_enabled),
+      'frontend',
+      '是否显示新闻动态模块'
+    );
+    
     return this.ok();
   }
 }

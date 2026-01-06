@@ -41,7 +41,7 @@ export class BintelAuthorityMiddleware
 
   @Init()
   async init() {
-    this.ignoreUrls = this.coolUrlTagData.byKey(TagTypes.IGNORE_TOKEN, 'admin');
+    this.ignoreUrls = this.coolUrlTagData.byKey(TagTypes.IGNORE_TOKEN, 'app');
   }
 
   resolve() {

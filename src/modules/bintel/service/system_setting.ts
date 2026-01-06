@@ -95,4 +95,18 @@ export class BintelSystemSettingService {
     }
     return true;
   }
+
+  /**
+   * 初始化前端模块显示配置
+   */
+  async initFrontendConfig() {
+    const configs = [
+      { keyName: 'forum_enabled', value: 'false', group: 'frontend', description: '是否显示开发者社区模块' },
+      { keyName: 'news_enabled', value: 'false', group: 'frontend', description: '是否显示新闻动态模块' },
+    ];
+    
+    for (const config of configs) {
+      await this.saveByKey(config.keyName, config.value, config.group, config.description);
+    }
+  }
 }
